@@ -1,14 +1,23 @@
+"use client";
+
+import { useState } from "react";
 import ImageBar from "./imageBar";
 import Tag from "./tag";
 
-export default function Item({ id }) {
+export default function Item({ id, remove }) {
+  const [imageBars, setImageBars] = useState([1]);
+
+  // Function to add a new ImageBar
+  const addImageBar = () => {
+    setImageBars([...imageBars, imageBars.length + 1]); // Add new ImageBar to the array
+  };
   return (
-    <div>
-      <div className="flex flex-row h-24">
-        <div className="basis-1/8">
+    <div className="mt-4 bg-blue-200">
+      <div className="flex flex-row h-24 items-center">
+        <div className="basis-1/12">
           <div className="flex flex-col mt-2">
             <div className="group">
-              <button className="ml-9">
+              <button className="ml-9" onClick={remove}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -44,8 +53,8 @@ export default function Item({ id }) {
             </div>
           </div>
         </div>
-        <div className="basis-1/4">
-          <div className="grid grid-cols-3 hover:grid-cols-6 gap-1 p-4 hover:shadow-lg">
+        <div className="basis-1/4 flex-shrink-0">
+          <div className="grid grid-cols-3 hover:grid-cols-6 gap-1 p-4 hover:shadow-lg hover:widthClass widthClass2">
             <Tag text={"Tharun"} />
             <Tag text={"Reddy"} />
             <Tag text={"Virat"} />
@@ -54,8 +63,26 @@ export default function Item({ id }) {
             <Tag text={"Kohli"} />
           </div>
         </div>
-        <div className="basis-5/8 overflows flex flex-row">
-          <ImageBar />
+        <div className="basis-8/12 overflow-x-auto flex flex-row no-scrollbar">
+          {imageBars.map((bar, index) => (
+            <ImageBar key={index} /> // Render each ImageBar
+          ))}
+          <button onClick={addImageBar} className="ml-12 mr-12">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6 bg-white rounded"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </div>
