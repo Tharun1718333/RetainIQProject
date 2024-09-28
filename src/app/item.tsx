@@ -1,18 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { Key, useEffect, useRef } from "react";
 import ImageBar from "./imageBar";
 import Tag from "./tag";
 
-export default function Item({ id, remove }) {
-  const [imageBars, setImageBars] = useState([1]);
+export default function Item({
+  id,
+  unqKey,
+  remove,
+  imageBars,
+  addImageBar,
+  scrollController,
+  passRefsToParent,
+}) {
+  const divRef = useRef();
 
-  // Function to add a new ImageBar
-  const addImageBar = () => {
-    setImageBars([...imageBars, imageBars.length + 1]); // Add new ImageBar to the array
-  };
+  useEffect(() => {
+    // Send the ref to the parent when the component mounts
+    passRefsToParent(divRef.current, unqKey);
+  }); // Only depend on `id`
+
   return (
-    <div className="mt-4 bg-blue-200">
+    <div className="bg-blue-200 m-4 rounded-lg">
       <div className="flex flex-row h-24 items-center">
         <div className="basis-1/12">
           <div className="flex flex-col mt-2">
@@ -63,18 +72,25 @@ export default function Item({ id, remove }) {
             <Tag text={"Kohli"} />
           </div>
         </div>
-        <div className="basis-8/12 overflow-x-auto flex flex-row no-scrollbar">
-          {imageBars.map((bar, index) => (
+        <div
+          className="basis-8/12 overflow-x-auto flex flex-row no-scrollbar"
+          onScroll={() => scrollController({ unqKey })}
+          ref={divRef} // Reference to this div
+        >
+          {imageBars.map((index: Key | null | undefined) => (
             <ImageBar key={index} /> // Render each ImageBar
           ))}
-          <button onClick={addImageBar} className="ml-12 mr-12">
+          <button
+            onClick={addImageBar}
+            className="w-72 flex justify-center flex-shrink-0"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-6 bg-white rounded"
+              className="size-6 bg-white rounded self-center"
             >
               <path
                 strokeLinecap="round"

@@ -1,3 +1,4 @@
+import { ToastContainer } from "react-toastify";
 import Body from "./body";
 import Header from "./header";
 
@@ -6,6 +7,7 @@ export default function Home() {
     <div>
       <Header />
       <Body />
+      <ToastContainer />
     </div>
   );
 }

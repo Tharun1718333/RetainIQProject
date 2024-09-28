@@ -16,24 +16,9 @@ export default function ImageBar() {
   };
 
   return (
-    <div className="ml-4 mr-48 flex-shrink-0">
+    <div className="w-72 flex flex-shrink-0 justify-center">
       {!imgPath ? (
-        // ( // Check if imgPath is null
-        //   <div className="mt-4">
-        //     <input
-        //       type="file"
-        //       accept="image/*"
-        //       onChange={handleImageChange}
-        //       aria-label="Image select"
-        //       title=" "
-        //       id="image_selector"
-        //     />
-        //     <label className="bg-white w-12 h-20">Add Design</label>
-        //   </div>
-        // ) : (
-        //   <AddedImage img_path={imgPath} />
-        // )
-        <div className="cursor-pointer" onClick={openFileSelector}>
+        <div className="cursor-pointer flex " onClick={openFileSelector}>
           <div className="bg-white w-20 h-20 flex items-center justify-center rounded-md">
             <div className=" text-xs bg-red-300 rounded-md py-1 px-0.5">
               + Add Button
