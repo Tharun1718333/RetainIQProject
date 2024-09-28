@@ -54,7 +54,7 @@ export default function Body() {
       position: "top-center",
     });
   };
-  const scrolledPrint = (key) => {
+  const scrolledElement = (key) => {
     const targetRef = refs.current[key.unqKey];
     const headerRef = refs.current["header"]; // Reference to the header
 
@@ -66,12 +66,7 @@ export default function Body() {
         }
       });
       if (headerRef) {
-        console.log(scrollPosition);
-        console.log(headerRef.scrollLeft);
         headerRef.scrollLeft = scrollPosition; // Set scroll position for the header
-        console.log(headerRef.scrollLeft);
-      } else {
-        console.log("no header found");
       }
     }
   };
@@ -111,7 +106,7 @@ export default function Body() {
             remove={() => handleRemoveItem(item.key)}
             imageBars={imageBars}
             addImageBar={addImageBar}
-            scrollController={scrolledPrint}
+            scrollController={scrolledElement}
             passRefsToParent={passRefsToParent}
           />
         ))}
