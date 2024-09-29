@@ -20,11 +20,14 @@ import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
-  useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 export default function Body() {
   const refs = useRef({});
+  const [dragEnabled, SetDrag] = useState(false);
+  const disableSortingModifier = ({ activatorEvent }) => {
+    return { activatorEvent: null }; // Return a null event so sorting won't occur
+  };
   const [HeaderNames, SetHeaderNames] = useState([
     "PrimaryVariant",
     "Variant1",
@@ -66,12 +69,17 @@ export default function Body() {
     return items.findIndex((e: any) => e.id === id);
   };
   const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(TouchSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: dragEnabled ? undefined : { distance: 9999 },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: dragEnabled ? undefined : { distance: 9999 },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
   const handleAddItem = () => {
     const nextId =
       items.length === 0 ? 1 : Math.max(...items.map((item) => item.id)) + 1;
@@ -154,6 +162,7 @@ export default function Body() {
           onDragEnd={handleDragEnd}
           sensors={sensors}
           collisionDetection={closestCorners}
+          modifiers={dragEnabled ? [] : [disableSortingModifier]}
         >
           <SortableContext
             items={items.map((elem: any) => elem?.id)}
@@ -170,6 +179,7 @@ export default function Body() {
                   addImageBar={addImageBar}
                   scrollController={scrolledElement}
                   passRefsToParent={passRefsToParent}
+                  SetSortable={SetDrag}
                 />
               );
             })}

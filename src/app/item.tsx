@@ -14,6 +14,7 @@ export default function Item({
   addImageBar,
   scrollController,
   passRefsToParent,
+  SetSortable,
 }) {
   const divRef = useRef();
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -57,7 +58,9 @@ export default function Item({
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="size-6 mt-1"
+                  className="size-6 mt-1 cursor-grabbing"
+                  onMouseDown={() => SetSortable(true)}
+                  onMouseUp={() => SetSortable(false)}
                 >
                   <path
                     strokeLinecap="round"
