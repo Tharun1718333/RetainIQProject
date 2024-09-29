@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useRef, useState } from "react";
@@ -6,6 +7,22 @@ import { toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 import HeaderOption from "./headerOption";
+import {
+  closestCorners,
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 export default function Body() {
   const refs = useRef({});
   const [HeaderNames, SetHeaderNames] = useState([
@@ -21,6 +38,40 @@ export default function Body() {
     { id: 6, key: 6 },
   ]);
   const [MaxKey, SetMaxKey] = useState(6);
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event;
+    if (active.id === over.id) return;
+    setItems((item: any[]) => {
+      const originalPosition = getItemPosition(active.id);
+      const newPosition = getItemPosition(over.id);
+      console.log(
+        "positions",
+        originalPosition,
+        newPosition,
+        active.id,
+        over.id
+      );
+
+      return arrayMove(items, originalPosition, newPosition);
+    });
+    setItems((prevItems) => {
+      return prevItems.map((item, index) => ({
+        ...item,
+        id: index + 1,
+        key: item.key, // Assign sequential IDs starting from 1
+      }));
+    });
+  };
+  const getItemPosition = (id: any) => {
+    return items.findIndex((e: any) => e.id === id);
+  };
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
   const handleAddItem = () => {
     const nextId =
       items.length === 0 ? 1 : Math.max(...items.map((item) => item.id)) + 1;
@@ -38,6 +89,7 @@ export default function Body() {
   };
   const handleRemoveItem = (itemKey) => {
     setItems((prevItems) => {
+      console.log("remoal requested for key", itemKey);
       // 1. Create a new array without the removed item
       const newItems = prevItems.filter((item) => item.key !== itemKey);
 
@@ -98,7 +150,32 @@ export default function Body() {
         </div>
       </div>
       <div className="rounded-lg">
-        {items.map((item) => (
+        <DndContext
+          onDragEnd={handleDragEnd}
+          sensors={sensors}
+          collisionDetection={closestCorners}
+        >
+          <SortableContext
+            items={items.map((elem: any) => elem?.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            {items?.map((item: any, idx) => {
+              return (
+                <Item
+                  key={item.key}
+                  id={item.id}
+                  unqKey={item.key}
+                  remove={() => handleRemoveItem(item.key)}
+                  imageBars={imageBars}
+                  addImageBar={addImageBar}
+                  scrollController={scrolledElement}
+                  passRefsToParent={passRefsToParent}
+                />
+              );
+            })}
+          </SortableContext>
+        </DndContext>
+        {/* {items.map((item) => (
           <Item
             key={item.key}
             id={item.id}
@@ -109,7 +186,8 @@ export default function Body() {
             scrollController={scrolledElement}
             passRefsToParent={passRefsToParent}
           />
-        ))}
+        ))} */}
+
         <button
           className="w-8 h-8 bg-red-500 text-2xl m-8 rounded"
           onClick={handleAddItem}
