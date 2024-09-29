@@ -44,13 +44,6 @@ export default function Body() {
     setItems(() => {
       const originalPosition = getItemPosition(active.id);
       const newPosition = getItemPosition(over.id);
-      console.log(
-        "positions",
-        originalPosition,
-        newPosition,
-        active.id,
-        over.id
-      );
 
       return arrayMove(items, originalPosition, newPosition);
     });
@@ -82,7 +75,7 @@ export default function Body() {
       items.length === 0 ? 1 : Math.max(...items.map((item) => item.id)) + 1;
     SetMaxKey(MaxKey + 1);
     setItems([...items, { id: nextId, key: MaxKey + 1 }]);
-    toast("Item Added", {
+    toast("Variant Added", {
       position: "top-center",
     });
   };
@@ -91,11 +84,12 @@ export default function Body() {
     setImageBars([...imageBars, imageBars.length + 1]); // Add new ImageBar to the array
     const nextVariant = "Variant" + HeaderNames.length; // Use length directly for the next variant
     SetHeaderNames([...HeaderNames, nextVariant]);
+    toast("Variant Added", {
+      position: "top-center",
+    });
   };
   const handleRemoveItem = (itemKey) => {
     setItems((prevItems) => {
-      console.log("remoal requested for key", itemKey);
-      // 1. Create a new array without the removed item
       const newItems = prevItems.filter((item) => item.key !== itemKey);
 
       return newItems;
@@ -107,7 +101,7 @@ export default function Body() {
         key: item.key, // Assign sequential IDs starting from 1
       }));
     });
-    toast("Item Removed", {
+    toast("State Removed", {
       position: "top-center",
     });
   };
@@ -137,8 +131,8 @@ export default function Body() {
   };
 
   return (
-    <div>
-      <div className="flex flex-row bg-red-500 h-12 rounded-lg items-center ml-4 mr-4">
+    <div className="bg-gray-100 m-4 rounded">
+      <div className="flex flex-row bg-gray-100 h-12 rounded-lg items-center ml-4 mr-4">
         <div className="basis-1/12 justify-self-center flex-shrink-0">
           &nbsp;
         </div>
@@ -181,21 +175,9 @@ export default function Body() {
             })}
           </SortableContext>
         </DndContext>
-        {/* {items.map((item) => (
-          <Item
-            key={item.key}
-            id={item.id}
-            unqKey={item.key}
-            remove={() => handleRemoveItem(item.key)}
-            imageBars={imageBars}
-            addImageBar={addImageBar}
-            scrollController={scrolledElement}
-            passRefsToParent={passRefsToParent}
-          />
-        ))} */}
 
         <button
-          className="w-8 h-8 bg-red-500 text-2xl m-8 rounded"
+          className="w-8 h-8 bg-white text-2xl m-8 rounded"
           onClick={handleAddItem}
         >
           +

@@ -28,9 +28,9 @@ export default function Item({
 
   return (
     <div ref={setNodeRef} {...attributes} {...listeners} style={style}>
-      <div className="bg-blue-200 m-4 rounded-lg">
-        <div className="flex flex-row h-24 items-center">
-          <div className="basis-1/12">
+      <div className="bg-white-200 m-4 rounded-lg bg-gray-200">
+        <div className="flex flex-row h-36 items-center">
+          <div className="basis-1/12 border-stone-300 border-r-2 mr-4">
             <div className="flex flex-col mt-2">
               <div className="group">
                 <button className="ml-9" onClick={remove}>
@@ -71,14 +71,13 @@ export default function Item({
               </div>
             </div>
           </div>
-          <div className="basis-1/4 flex-shrink-0">
+          <div className="basis-1/4 flex-shrink-0 bg-white mr-4">
             <div className="grid grid-cols-3 hover:grid-cols-6 gap-1 p-4 hover:shadow-lg hover:widthClass widthClass2">
-              <Tag text={"Tharun"} />
-              <Tag text={"Reddy"} />
-              <Tag text={"Virat"} />
-              <Tag text={"Kohli"} />
-              <Tag text={"Virat"} />
-              <Tag text={"Kohli"} />
+              <Tag text={"tags"} />
+              <Tag text={"Koushik"} />
+              <Tag text={"Ranga"} />
+              <Tag text={"empty"} />
+              <Tag text={"onSale"} />
             </div>
           </div>
           <div
