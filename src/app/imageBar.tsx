@@ -85,7 +85,6 @@ export default function ImageBar() {
                   key={item}
                   id={item}
                   setSelected={setSelectedId}
-                  selectedId={selectedId}
                   Closer={setIsOpen}
                 />
               ))}

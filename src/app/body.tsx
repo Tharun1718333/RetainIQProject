@@ -25,9 +25,6 @@ import {
 export default function Body() {
   const refs = useRef({});
   const [dragEnabled, SetDrag] = useState(false);
-  const disableSortingModifier = ({ activatorEvent }) => {
-    return { activatorEvent: null }; // Return a null event so sorting won't occur
-  };
   const [HeaderNames, SetHeaderNames] = useState([
     "PrimaryVariant",
     "Variant1",
@@ -44,7 +41,7 @@ export default function Body() {
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
     if (active.id === over.id) return;
-    setItems((item: any[]) => {
+    setItems(() => {
       const originalPosition = getItemPosition(active.id);
       const newPosition = getItemPosition(over.id);
       console.log(
@@ -162,13 +159,12 @@ export default function Body() {
           onDragEnd={handleDragEnd}
           sensors={sensors}
           collisionDetection={closestCorners}
-          modifiers={dragEnabled ? [] : [disableSortingModifier]}
         >
           <SortableContext
             items={items.map((elem: any) => elem?.id)}
             strategy={verticalListSortingStrategy}
           >
-            {items?.map((item: any, idx) => {
+            {items?.map((item: any) => {
               return (
                 <Item
                   key={item.key}

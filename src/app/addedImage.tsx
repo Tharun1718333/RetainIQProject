@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export default function AddedImage({ img_path }) {
   return (
     <div className="flex-shrink-0">
